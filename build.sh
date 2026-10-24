@@ -12,6 +12,7 @@ RESOURCES="$CONTENTS/Resources"
 # Handle arguments
 INSTALL=false
 CLEAN=false
+MAKE_DMG=false
 
 for arg in "$@"; do
     case "$arg" in
@@ -21,10 +22,14 @@ for arg in "$@"; do
         --clean|-c)
             CLEAN=true
             ;;
+        --dmg|-d)
+            MAKE_DMG=true
+            ;;
         --help|-h)
             echo "Usage: ./build.sh [OPTIONS]"
             echo "Options:"
             echo "  --install, -i    Compile and install Lattice.app to /Applications"
+            echo "  --dmg, -d        Compile and package a distributable Lattice.dmg installer"
             echo "  --clean, -c      Clean build directory before building"
             echo "  --help, -h       Show this help message"
             exit 0
@@ -66,7 +71,6 @@ echo "✅ Build successful: $APP_DIR"
 # Install to /Applications if requested
 if [ "$INSTALL" = true ]; then
     echo "📦 Installing to /Applications/$APP_NAME..."
-    # Quit existing process if running
     pkill -f "Lattice.app/Contents/MacOS/Lattice" || true
     sleep 0.5
     rm -rf "/Applications/$APP_NAME"
@@ -74,4 +78,23 @@ if [ "$INSTALL" = true ]; then
     echo "🎉 Installed to /Applications/$APP_NAME successfully!"
     echo "🚀 Launching Lattice..."
     open "/Applications/$APP_NAME"
+fi
+
+# Package DMG if requested
+if [ "$MAKE_DMG" = true ]; then
+    DMG_NAME="Lattice.dmg"
+    DMG_PATH="$BUILD_DIR/$DMG_NAME"
+    DMG_STAGING="$BUILD_DIR/dmg_staging"
+    
+    echo "📀 Creating DMG installer package: $DMG_PATH..."
+    rm -rf "$DMG_STAGING" "$DMG_PATH"
+    mkdir -p "$DMG_STAGING"
+    
+    cp -R "$APP_DIR" "$DMG_STAGING/"
+    ln -s /Applications "$DMG_STAGING/Applications"
+    
+    hdiutil create -volname "Lattice" -srcfolder "$DMG_STAGING" -ov -format UDZO "$DMG_PATH" > /dev/null
+    rm -rf "$DMG_STAGING"
+    
+    echo "🎉 DMG created successfully: $DMG_PATH ($(du -h "$DMG_PATH" | cut -f1))"
 fi

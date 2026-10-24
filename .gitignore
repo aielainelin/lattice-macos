@@ -1,0 +1,25 @@
+# Build output
+build/
+*.app/
+*.dSYM/
+.build/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Xcode & SwiftPM
+xcuserdata/
+*.xcworkspace
+*.xcuserdatad
+*.pbxuser
+DerivedData/
+
+# Logs & Backups
+*.log
+*.bak*
+*.tmp

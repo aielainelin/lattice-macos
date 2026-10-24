@@ -16,6 +16,12 @@
   <img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License">
 </p>
 
+<p align="center">
+  <a href="https://github.com/aielainelin/lattice-macos/releases/latest/download/Lattice.dmg">
+    <img src="https://img.shields.io/badge/Download-Lattice.dmg%20(v1.0.0)-007AFF?style=for-the-badge&logo=apple&logoColor=white" alt="Download Lattice.dmg">
+  </a>
+</p>
+
 ---
 
 ## 📖 專案緣起 (Why Lattice?)
